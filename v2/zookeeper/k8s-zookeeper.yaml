@@ -1,0 +1,47 @@
+#-------------------------------------NAMESPACE----------------------
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bco-kafka
+#--------------------------------------SERVICE-----------------------
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-svc
+  namespace: bco-kafka
+  labels:
+    app: zk-svc
+spec:
+  ports:
+  - port: 2181
+    targetPort: 2181
+    name: zoo
+  #clusterIP: None
+  selector:
+    app: zk
+#-------------------------------------DEPLOYMENT---------------------
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zk-d
+  namespace: bco-kafka
+  labels:
+    app: zk
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zk
+    spec:
+      containers:
+      - image: agustincharry/bco-zookeeper:k8s2
+        name: zookeeper
+        ports:
+        - name: http
+          containerPort: 2181

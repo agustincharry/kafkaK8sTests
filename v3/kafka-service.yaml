@@ -1,0 +1,16 @@
+#https://medium.com/rahasak/kafka-zookeeper-cluster-on-kubernetes-43a4aaf27dbb
+apiVersion: v1
+kind: Service
+metadata:
+  name: kaf1
+spec:
+  type: LoadBalancer
+  externalIPs:
+    - 172.31.25.198
+  ports:
+    - name: port-9092
+      port: 9092
+      nodePort: 30091
+      protocol: TCP
+  selector:
+    app: kafka1

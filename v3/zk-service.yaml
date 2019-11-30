@@ -1,0 +1,19 @@
+#https://medium.com/rahasak/kafka-zookeeper-cluster-on-kubernetes-43a4aaf27dbb
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo1
+spec:
+  type: LoadBalancer
+  ports:
+  - name: port-2181
+    port: 2181
+    protocol: TCP 
+  - name: port-2888
+    port: 2888
+    protocol: TCP 
+  - name: port-3888
+    port: 3888
+    protocol: TCP 
+  selector:
+    app: zookeeper1

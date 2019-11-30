@@ -1,0 +1,13 @@
+kubectl -n bco-kafka exec -ti kafka-0 -- bash
+
+kafka-topics.sh --create --topic test --zookeeper zk-0.zk-svc.bco-kafka.svc.cluster.local:2181,zk-1.zk-svc.bco-kafka.svc.cluster.local:2181,zk-2.zk-svc.bco-kafka.svc.cluster.local:2181 --partitions 3 --replication-factor 2
+
+kafka-console-consumer.sh --topic test --bootstrap-server localhost:9093
+
+kafka-console-producer.sh --topic test --broker-list localhost:9093
+
+
+
+
+kafka-console-producer.sh --topic test --broker-list kafka-0.kafka-svc.bco-kafka.svc.cluster.local:9093
+kafka-console-consumer.sh --topic test --bootstrap-server kafka-1.kafka-svc.bco-kafka.svc.cluster.local:9093

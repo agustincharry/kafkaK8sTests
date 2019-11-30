@@ -1,0 +1,47 @@
+#-------------------------------------NAMESPACE----------------------
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bco-kafka
+#--------------------------------------SERVICE-----------------------
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-svc
+  namespace: bco-kafka
+  labels:
+    app: kafka
+spec:
+  type: NodePort
+  ports:
+  - port: 9092
+    targetPort: 9092
+    nodePort: 30092
+  selector:
+    app: kafka
+#-------------------------------------DEPLOYMENT---------------------
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-d
+  namespace: bco-kafka
+  labels:
+    app: kafka
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - image: agustincharry/bco-kafka:k8s2
+        name: kafka
+        ports:
+        - name: http
+          containerPort: 9092

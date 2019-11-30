@@ -1,0 +1,26 @@
+#-------------------------------------DEPLOYMENT----------------------
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: consumer-kafka
+  labels:
+    app: consumer-kafka
+spec:
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: consumer-kafka
+    spec:
+      containers:
+      - image: agustincharry/consumer-kafka-node:1.0
+        name: consumer-kafka
+        env:
+        - name: kafkaHost
+          value : "kafka-svc.bco-kafka.svc.cluster.local:9093"
+        ports:
+        - name: http
+          containerPort: 4000
